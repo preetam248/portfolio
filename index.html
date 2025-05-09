@@ -851,54 +851,70 @@
 
     <script>
       // Mobile menu toggle
-      document
-        .getElementById("menu-toggle")
-        .addEventListener("click", function () {
-          const menu = document.getElementById("mobile-menu");
-          menu.classList.toggle("hidden");
-        });
+      document.getElementById('menu-toggle').addEventListener('click', function() {
+          const menu = document.getElementById('mobile-menu');
+          menu.classList.toggle('hidden');
+      });
 
       // Highlight active nav link on scroll
-      const sections = document.querySelectorAll("section");
-      const navLinks = document.querySelectorAll(".nav-link");
+      const sections = document.querySelectorAll('section');
+      const navLinks = document.querySelectorAll('.nav-link');
 
-      window.addEventListener("scroll", function () {
-        let current = "";
+      window.addEventListener('scroll', function() {
+          let current = '';
+          
+          sections.forEach(section => {
+              const sectionTop = section.offsetTop;
+              const sectionHeight = section.clientHeight;
+              
+              if (pageYOffset >= (sectionTop - 300)) {
+                  current = section.getAttribute('id');
+              }
+          });
+          
+          navLinks.forEach(link => {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === `#${current}`) {
+                  link.classList.add('active');
+              }
+          });
+      });
 
-        sections.forEach((section) => {
-          const sectionTop = section.offsetTop;
-          const sectionHeight = section.clientHeight;
-
-          if (pageYOffset >= sectionTop - 300) {
-            current = section.getAttribute("id");
-          }
-        });
-
-        navLinks.forEach((link) => {
-          link.classList.remove("active");
-          if (link.getAttribute("href") === `#${current}`) {
-            link.classList.add("active");
-          }
-        });
+      // Form submission
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          
+          // Get form values
+          const name = document.getElementById('name').value;
+          const email = document.getElementById('email').value;
+          const subject = document.getElementById('subject').value;
+          const message = document.getElementById('message').value;
+          
+          // Here you would typically send the data to a server
+          // For this example, we'll just show an alert
+          alert(`Thank you, ${name}! Your message has been sent. I'll get back to you soon.`);
+          
+          // Reset form
+          this.reset();
       });
 
       // Add animation classes on scroll
       const observerOptions = {
-        threshold: 0.1,
+          threshold: 0.1
       };
 
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fadeIn");
-            observer.unobserve(entry.target);
-          }
-        });
+          entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                  entry.target.classList.add('animate-fadeIn');
+                  observer.unobserve(entry.target);
+              }
+          });
       }, observerOptions);
 
-      document.querySelectorAll("section").forEach((section) => {
-        observer.observe(section);
+      document.querySelectorAll('section').forEach(section => {
+          observer.observe(section);
       });
-    </script>
+  </script>
   </body>
 </html>
